@@ -16,3 +16,15 @@ def format_screenshot_tool_output(screenshot: str, msg: str) -> ToolImplOutput:
         ],
         tool_result_message=msg,
     )
+
+def format_html_tool_output(html: str, msg: str) -> ToolImplOutput:
+    return ToolImplOutput(
+        tool_output=[
+            {
+                "type": "text",
+                "text": html,
+            },
+            {"type": "text", "text": msg},
+        ],
+        tool_result_message=msg,
+    )

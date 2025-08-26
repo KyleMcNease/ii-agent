@@ -72,6 +72,10 @@ class DatasetInferenceRunner:
     def __init__(self, output_dir: str, settings_config: Dict[str, Any], 
                  max_workers: int = 4, port_start: int = 6000, port_max: int = 7000):
         self.output_dir = Path(output_dir)
+        os.makedirs(
+            self.output_dir,
+            exist_ok=True
+        )
         self.settings_config = settings_config
         self.max_workers = max_workers
         self.port_manager = PortManager(port_start, port_max)
@@ -126,7 +130,34 @@ class DatasetInferenceRunner:
                 queries = queries[start_idx:]
             else:
                 queries = queries[start_idx:end_idx]
-            
+            instruction="""
+Please implement both the backend and frontend with full API integration and database support. The frontend must interact seamlessly with the backend through the defined API endpoints.
+If a database is used, provide a pre-populated mock sample database in the backend so the client can test the website immediately without extra setup. 
+All setup, usage, and testing instructions must be thoroughly documented in the README.md file. This documentation should cover:
+1. Setup & Installation
+- Step-by-step installation instructions.
+- Environment configuration details (including required variables).
+- Commands to build and run the project.
+- Order of startup (backend first, frontend second, etc.).
+2. API & Backend Details
+- List of API endpoints with request/response examples.
+- Error handling notes (status codes, error messages).
+- Database reset instructions if demo data needs to be restored.
+3. Client Usage Instructions (Frontend Testing)
+- Login credentials if need: provide at least one test account (and additional accounts if there are different roles, e.g., Admin/User).
+- Access instructions: URL/port to open the frontend (e.g., http://localhost:3000).
+- Navigation guide: overview of available pages and features.
+- Search & filter testing:
+    * Valid example queries that return results.
+    * Invalid/edge-case queries that show error or “no results found.”
+- Forms & data entry:
+    * Example inputs that succeed.
+    * Example inputs that should fail validation.
+    * Error messages: description of typical validation or login errors the client may encounter.
+"""
+            queries = [
+                instruction + "\n\n" + q for q in queries
+            ]
             self.logger.info(f"Loaded {len(queries)} queries from {dataset_name}")
             return queries
             
@@ -215,7 +246,7 @@ class DatasetInferenceRunner:
     async def run_parallel_inference(self, queries: List[str]) -> List[Dict[str, Any]]:
         """Run inference on multiple queries in parallel"""
         # Create query tasks
-        query_tasks = [(query, f"query_{i:04d}") for i, query in enumerate(queries)]
+        query_tasks = [(query, f"query_{i:06d}") for i, query in enumerate(queries)]
         
         # Create semaphore for concurrency control
         semaphore = asyncio.Semaphore(self.max_workers)

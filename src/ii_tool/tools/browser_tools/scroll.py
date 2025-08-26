@@ -112,6 +112,10 @@ class BrowserScrollUpTool(BrowserTool):
                         data=state.screenshot,
                         mime_type="image/png"
                     ),
+                    # TextContent(
+                    #     type='text',
+                    #     text=state.content_html
+                    # ),
                     TextContent(
                         type='text',
                         text=msg

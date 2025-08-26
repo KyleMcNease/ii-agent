@@ -148,7 +148,7 @@ II-Agent supports running with MCP (Model Context Protocol) servers in Docker co
 
 1. Build the backend Docker image:
 ```bash
-sudo docker build -f docker/backend/DockerfileBackEndOnly.dockerfile -t ii-agent-backend:0.2 .
+  sudo docker build -f docker/backend/DockerfileBackEndOnly.dockerfile -t ii-agent-backend:0.4 .
 ```
 
 2. Create a Python virtual environment and install dependencies:

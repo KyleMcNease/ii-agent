@@ -4,7 +4,7 @@ from ii_tool.tools.base import BaseTool, ToolResult, ToolConfirmationDetails
 
 
 # Constants
-DEFAULT_TIMEOUT = 60
+DEFAULT_TIMEOUT = 120
 
 # Name
 NAME = "Bash"
@@ -35,7 +35,7 @@ Before executing the command, please follow these steps:
 
 Usage notes:
   - The command argument is required.
-  - You can specify an optional timeout in milliseconds (up to 600000ms / 10 minutes). If not specified, commands will timeout after 120000ms (2 minutes).
+  - You can specify an optional timeout in seconds (up to 600s - 10 minutes). If not specified, commands will timeout after 120 (1 minutes).
   - It is very helpful if you write a clear, concise description of what this command does in 5-10 words.
   - If the output exceeds 30000 characters, output will be truncated before being returned to you.
   - VERY IMPORTANT: You MUST avoid using search commands like `find` and `grep`. Instead use Grep, Glob, or Task to search. You MUST avoid read tools like `cat`, `head`, `tail`, and `ls`, and use Read and LS to read files.
@@ -72,7 +72,7 @@ INPUT_SCHEMA = {
         },
         "wait_for_output": {
             "type": "boolean",
-            "description": "Whether to wait for the command to finish and return the output within the timeout. For deployment or long running commands, it is recommended to set this to False and use `BashView` to get the output.",
+            "description": "Specifies whether to wait for the command to complete and return its output within the timeout. For deployments (e.g., starting a backend server or frontend), where tasks may run indefinitely or until manually stopped, it is recommended to set this to False and use BashView to monitor the output.",
             "default": True
         }
     },

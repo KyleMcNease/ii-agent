@@ -10,7 +10,7 @@ from abc import ABC, abstractmethod
 from typing import List
 
 # This is a marker that indicates the end of the command output
-_DEFAULT_TIMEOUT = 30
+_DEFAULT_TIMEOUT = 15
 _POLL_INTERVAL = 0.5
 _DEFAULT_PROMPT_PREFIX = "root@sandbox:"
 _PROMPT_FORMAT = f"{_DEFAULT_PROMPT_PREFIX}$(pwd)\\$ "

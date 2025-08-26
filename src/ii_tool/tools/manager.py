@@ -36,7 +36,16 @@ from ii_tool.tools.media import (
     ImageGenerateTool,
 )
 from ii_tool.tools.dev import FullStackInitTool
-
+from ii_tool.tools.browser_tools.click import BrowserClickTool
+from ii_tool.tools.browser_tools.navigate import BrowserNavigationTool, BrowserRestartTool
+from ii_tool.tools.browser_tools.scroll import BrowserScrollDownTool, BrowserScrollUpTool
+from ii_tool.tools.browser_tools.enter_text import BrowserEnterTextTool
+from ii_tool.tools.browser_tools.view import BrowserViewTool
+from ii_tool.tools.browser_tools.dropdown import BrowserGetSelectOptionsTool, BrowserSelectDropdownOptionTool
+from ii_tool.tools.browser_tools.press_key import BrowserPressKeyTool
+from ii_tool.tools.browser_tools.tab import BrowserSwitchTabTool, BrowserOpenNewTabTool
+from ii_tool.tools.browser_tools.wait import BrowserWaitTool
+from ii_agent.browser.browser import Browser
 
 def get_default_tools(
     chat_session_id: str,
@@ -76,9 +85,10 @@ def get_default_tools(
         TodoReadTool(),
         TodoWriteTool(),
         # Web tools
+
+
         
     ]
-
     if web_search_config is not None:
         tools.append(
             WebSearchTool(settings=web_search_config)

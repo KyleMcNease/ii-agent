@@ -38,6 +38,7 @@ async def load_tools_from_mcp(transport: FastMCP | str | Dict) -> list[MCPTool]:
         Various connection exceptions: If the MCP server is unreachable or returns errors.
     """
     tools = []
+    print(transport)
     mcp_client = Client(transport)
 
     async with mcp_client:

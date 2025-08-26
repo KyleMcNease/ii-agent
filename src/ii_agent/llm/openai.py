@@ -133,6 +133,7 @@ class OpenAIDirectClient(LLMClient):
                                             "url": f"data:{block['source']['media_type']};base64,{block['source']['data']}"
                                         }
                                     }
+                                    tool_result_message['role'] = 'user'
                                     updated_content.append(new_block)
                                 else:
                                     updated_content.append(block)
@@ -149,6 +150,7 @@ class OpenAIDirectClient(LLMClient):
                         }
                         image_message = {"role": "user", "content": [content]}
                         openai_messages.append(image_message)
+                        print(openai_messages)
                         continue
                 
                 # Add user text message if present
@@ -233,6 +235,7 @@ class OpenAIDirectClient(LLMClient):
             openai_tools.append(openai_tool_object)
 
         response = None
+        
         for retry in range(self.max_retries):
             try:
                 extra_body = {}
@@ -257,10 +260,12 @@ class OpenAIDirectClient(LLMClient):
                 OpenAI_RateLimitError,
             ) as e:
                 if retry == self.max_retries - 1:
-                    print(f"Failed OpenAI request after {retry + 1} retries")
+                    print(f"Failed OpenAI request after {retry + 1} retries with {openai_messages}")
+                    with open("/home/slurm/tuenv2/open_i1_project/agent-proj/explore/agentic_infer/ii-vex/evaluation/web-bench/failed.json", "w+") as f:
+                        f.write(json.dumps(openai_messages))
                     raise e
                 else:
-                    print(f"Retrying OpenAI request: {retry + 1}/{self.max_retries}")
+                    print(f"Retrying OpenAI request: {retry + 1}/{self.max_retries} with {e}")
                     # Sleep 8-12 seconds with jitter to avoid thundering herd.
                     time.sleep(10 * random.uniform(0.8, 1.2))
 

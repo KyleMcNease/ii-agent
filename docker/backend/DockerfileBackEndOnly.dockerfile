@@ -15,6 +15,14 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
+# Install Node.js and npm (using NodeSource repository for latest LTS)
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
+    apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Yarn package manager globally
+RUN npm install -g yarn
+
 # Copy project files
 COPY . /app
 
@@ -27,9 +35,11 @@ RUN pip install --upgrade pip
 
 # Install the project and its dependencies using pip
 RUN pip install -e .
-
+RUN pip install -r /app/.templates/react-tailwind-python/backend/requirements.txt
+RUN pip install notte
 # Install Playwright with dependencies
-RUN playwright install --with-deps chromium
+# RUN playwright install --with-deps chromium
+RUN patchright install --with-deps chromium
 
 # Set environment variables
 ENV FILE_STORE_PATH=/.ii_agent

@@ -94,3 +94,4 @@ class BrowserState:
     screenshot_with_highlights: Optional[str] = None
     screenshot: Optional[str] = None
     interactive_elements: dict[int, InteractiveElement] = field(default_factory=dict)
+    content_html: str = None

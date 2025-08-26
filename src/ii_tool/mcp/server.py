@@ -5,6 +5,7 @@ from fastmcp import FastMCP
 from argparse import ArgumentParser
 from ii_tool.core.config import WebSearchConfig, WebVisitConfig, ImageSearchConfig, VideoGenerateConfig, ImageGenerateConfig, FullStackDevConfig
 from ii_tool.tools.manager import get_default_tools
+from ii_tool.tools.browser_dom_tools.notte_mcp.browser_dom_notte import mcp as notte_mcp
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -57,6 +58,11 @@ async def create_mcp(workspace_dir: str, session_id: str, args):
         _mcp_tool = await mcp._tool_manager.get_tool(tool.name)
         _mcp_tool.parameters = tool.input_schema
 
+
+    if args.browser_tool_use:
+        # add browser_tool_use with dom here 
+        await mcp.import_server(notte_mcp)
+
     return mcp
 
 async def main():
@@ -69,6 +75,9 @@ async def main():
     )
     parser.add_argument(
         "--enable-media-tools", type=bool, default=False
+    )
+    parser.add_argument(
+        "--browser-tool-use", type=bool, default=True
     )
     args = parser.parse_args()
 

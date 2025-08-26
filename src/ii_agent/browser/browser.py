@@ -76,7 +76,7 @@ class BrowserConfig:
 
     cdp_url: Optional[str] = None
     viewport_size: ViewportSize = field(
-        default_factory=lambda: {"width": 1268, "height": 951}
+        default_factory=lambda: {"width": 1000, "height": 1000}
     )
     storage_state: Optional[StorageState] = None
     detector: Optional[Detector] = None
@@ -169,6 +169,7 @@ class Browser:
                 self.playwright_browser = await self.playwright.chromium.launch(
                     headless=False,
                     args=[
+                        "--headless=true",
                         "--no-sandbox",
                         "--disable-blink-features=AutomationControlled",
                         "--disable-web-security",
@@ -398,7 +399,7 @@ class Browser:
             if self.current_page is None:
                 await self._init_browser()
             url = self.current_page.url
-
+            html_content = await self.current_page.content()
             detect_sheets = "docs.google.com/spreadsheets/d" in url
 
             screenshot_b64 = await self.fast_screenshot()
@@ -424,6 +425,7 @@ class Browser:
                 screenshot=screenshot_b64,
                 viewport=interactive_elements_data.viewport,
                 interactive_elements=interactive_elements,
+                content_html=html_content
             )
 
         try:
